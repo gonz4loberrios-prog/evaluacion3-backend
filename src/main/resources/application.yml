@@ -1,0 +1,47 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: evaluacion3-backend
+
+  # Configuración de Base de Datos Cloud (Neon / PostgreSQL)
+  datasource:
+    url: jdbc:postgresql://ep-round-term-b43mycbh-pooler.c-6.us-east-2.aws.neon.tech/neondb?sslmode=require
+    username: neondb_owner
+    password: npg_RjY7h6IkEpny
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+  # Configuración del Broker RabbitMQ (CloudAMQP)
+  rabbitmq:
+    addresses: amqps://oezqeocc:WKFvQSiatiK0rO0OnQVrZTXpLQ7v-xEc@woodpecker.rmq.cloudamqp.com/oezqeocc
+    listener:
+      simple:
+        acknowledge-mode: manual # Exigido para ACK/NACK explícito
+
+  # Configuración de Seguridad JWT / IDaaS
+  #security:
+  #  oauth2:
+   #   resourceserver:
+    #    jwt:
+     #     issuer-uri: https://dev-ejemplo.us.auth0.com/
+
+# Definición Centralizada de Nombres de Mensajería
+app:
+  rabbitmq:
+    exchange:
+      notifications: notifications.exchange
+    queue:
+      notification: notification.queue
+      dlq: notification.dlq
+    routing-key:
+      notification: notification.routingkey
+      dlq: notification.dlq.routingkey
